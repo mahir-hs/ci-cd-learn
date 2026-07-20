@@ -15,6 +15,7 @@
 | `CLAUDE.md` | Project rules (e.g. no push without permission) |
 | `.github/workflows/ci.yml` | The CI/CD pipeline (**you create this** — see below) |
 | `README.md` | This file |
+| `NEXT_STEPS.md` | **Learning roadmap** — what to study next (start here tomorrow) |
 
 ## Project structure
 
@@ -189,6 +190,10 @@ jobs:
 ---
 
 ## Next challenges
+
+> 📌 **Full learning roadmap is in [`NEXT_STEPS.md`](./NEXT_STEPS.md)** — the topics our toy pipeline
+> skipped (PRs & branch protection, secrets, artifacts, matrix, real deploy, caching, and more),
+> organized in tiers with a recommended order. **Start there tomorrow.**
 
 - **Matrix** — test against Node 18 *and* 20 at once:
   ```yaml
