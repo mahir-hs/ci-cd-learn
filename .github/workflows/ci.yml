@@ -25,12 +25,57 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: npm install
-      - name: Run tests
-        run: npm test
+      - name: Run tests with JUnit output
+        run: npm test -- --test-reporter=junit --test-reporter-destination=test-results.xml
+      - name: Upload test results (JUnit XML)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-node-${{ matrix.node-version }}
+          path: test-results.xml
+          retention-days: 7
+      - name: Run tests with coverage
+        run: npm test -- --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=coverage.lcov
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-node-${{ matrix.node-version }}
+          path: coverage.lcov
+          retention-days: 7
+
+  # Example: Download artifacts in a downstream job (e.g., for reporting/deployment)
+  aggregate-results:
+    runs-on: ubuntu-latest
+    needs: run-test
+    if: always()
+    steps:
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-results-node-*
+          path: all-test-results
+      - name: Download all coverage reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-node-*
+          path: all-coverage
+      - name: List downloaded artifacts
+        run: |
+          echo "=== Test Results ==="
+          ls -la all-test-results/
+          echo "=== Coverage Reports ==="
+          ls -la all-coverage/
+      - name: Show sample test result
+        run: |
+          head -20 all-test-results/test-results-node-*/test-results.xml || true
+      - name: Show coverage summary
+        run: |
+          head -20 all-coverage/coverage-node-*/coverage.lcov || true
 
   deploy:
     runs-on: ubuntu-latest
-    needs: run-test
+    needs: [run-test, aggregate-results]
     steps:
       - name: deploy
-        run: echo "deploying"
+        run: echo "deploying... (artifacts available from aggregate-results job)"
