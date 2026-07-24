@@ -9,14 +9,33 @@ on:
     branches:
       - main
       - master
+env:
+  GLOBAL_VAR: "This is a global variable"
 
 jobs:
   run-test:
     runs-on: ubuntu-latest
+    env:
+      JOB_VAR: "This is a job-specific variable"
     strategy:
       matrix:
         node-version: [18, 20, 22]
     steps:
+      - name: Use Variables
+        env:
+          STEP_VAR: "This is a step-specific variable"
+        run: |
+          echo "Matrix Node Version: ${{ matrix.node-version }}"
+          echo "Global Variable: $GLOBAL_VAR"
+          echo "Job Variable: $JOB_VAR"
+          echo "step specific variable: $STEP_VAR"
+
+      - name: GitHub context
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Commit SHA: ${{ github.sha }}"
+
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: setup node.js
