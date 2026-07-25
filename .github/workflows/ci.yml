@@ -53,15 +53,6 @@ jobs:
           name: test-results-node-${{ matrix.node-version }}
           path: test-results.xml
           retention-days: 7
-      - name: Run tests with coverage
-        run: npm test -- --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=coverage.lcov
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: coverage-node-${{ matrix.node-version }}
-          path: coverage.lcov
-          retention-days: 7
 
   # Example: Download artifacts in a downstream job (e.g., for reporting/deployment)
   aggregate-results:
@@ -98,3 +89,11 @@ jobs:
     steps:
       - name: deploy
         run: echo "deploying... (artifacts available from aggregate-results job)"
+
+      - name: only run on main branch
+        if: github.ref == 'refs/heads/main'
+        run: echo "This step runs only on the main branch."
+
+      - name: only run on pull request
+        if: github.event_name == 'pull_request'
+        run: echo "This step runs only on pull requests."
