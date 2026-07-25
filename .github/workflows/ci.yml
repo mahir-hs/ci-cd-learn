@@ -37,9 +37,9 @@ jobs:
           echo "Commit SHA: ${{ github.sha }}"
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       - name: setup node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
@@ -47,7 +47,7 @@ jobs:
       - name: Run tests with JUnit output
         run: npm test -- --test-reporter=junit --test-reporter-destination=test-results.xml
       - name: Upload test results (JUnit XML)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: test-results-node-${{ matrix.node-version }}
