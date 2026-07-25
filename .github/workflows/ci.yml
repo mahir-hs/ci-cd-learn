@@ -65,23 +65,13 @@ jobs:
         with:
           pattern: test-results-node-*
           path: all-test-results
-      - name: Download all coverage reports
-        uses: actions/download-artifact@v4
-        with:
-          pattern: coverage-node-*
-          path: all-coverage
       - name: List downloaded artifacts
         run: |
           echo "=== Test Results ==="
           ls -la all-test-results/
-          echo "=== Coverage Reports ==="
-          ls -la all-coverage/
       - name: Show sample test result
         run: |
           head -20 all-test-results/test-results-node-*/test-results.xml || true
-      - name: Show coverage summary
-        run: |
-          head -20 all-coverage/coverage-node-*/coverage.lcov || true
 
   deploy:
     runs-on: ubuntu-latest
