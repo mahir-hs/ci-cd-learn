@@ -1,5 +1,6 @@
 # CI/CD Practice — A Tiny Node.js App
 
+![CI/CD Pipeline](https://github.com/${{ github.repository }}/workflows/CI/CD%20Pipeline/badge.svg)
 > A minimal JavaScript math app + tests, built for the **sole purpose of learning CI/CD**.
 > Everything is kept **dependency-free** so the pipeline stays simple and readable.
 
