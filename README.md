@@ -1,6 +1,7 @@
 # CI/CD Practice — A Tiny Node.js App
 
-![CI/CD Pipeline](https://github.com/${{ github.repository }}/workflows/CI/CD%20Pipeline/badge.svg)
+[![CI](https://github.com/mahir-hs/ci-cd-learn/actions/workflows/ci.yml/badge.svg)](https://github.com/mahir-hs/ci-cd-learn/actions/workflows/ci.yml)
+
 > A minimal JavaScript math app + tests, built for the **sole purpose of learning CI/CD**.
 > Everything is kept **dependency-free** so the pipeline stays simple and readable.
 
@@ -8,15 +9,15 @@
 
 ## What's inside
 
-| File | What it is |
-|------|------------|
-| `src/index.js` | The app — a tiny math module |
-| `test/index.test.js` | Automated tests (Node's built-in runner) |
-| `package.json` | Project metadata + the `test` script |
-| `CLAUDE.md` | Project rules (e.g. no push without permission) |
-| `.github/workflows/ci.yml` | The CI/CD pipeline (**you create this** — see below) |
-| `README.md` | This file |
-| `NEXT_STEPS.md` | **Learning roadmap** — what to study next (start here tomorrow) |
+| File                       | What it is                                                      |
+| -------------------------- | --------------------------------------------------------------- |
+| `src/index.js`             | The app — a tiny math module                                    |
+| `test/index.test.js`       | Automated tests (Node's built-in runner)                        |
+| `package.json`             | Project metadata + the `test` script                            |
+| `CLAUDE.md`                | Project rules (e.g. no push without permission)                 |
+| `.github/workflows/ci.yml` | The CI/CD pipeline (**you create this** — see below)            |
+| `README.md`                | This file                                                       |
+| `NEXT_STEPS.md`            | **Learning roadmap** — what to study next (start here tomorrow) |
 
 ## Project structure
 
@@ -41,10 +42,10 @@ ci-cd-practice/
 `src/index.js` exports four small **pure** functions:
 
 ```js
-add(a, b)        // returns a + b
-subtract(a, b)   // returns a - b
-multiply(a, b)   // returns a * b
-divide(a, b)     // returns a / b; throws "Cannot divide by zero" if b === 0
+add(a, b); // returns a + b
+subtract(a, b); // returns a - b
+multiply(a, b); // returns a * b
+divide(a, b); // returns a / b; throws "Cannot divide by zero" if b === 0
 ```
 
 It uses **ES modules** (`"type": "module"` in `package.json`), so files use `import` / `export`.
@@ -139,18 +140,18 @@ jobs:
 
 ### What each part means
 
-| Part | Meaning |
-|------|---------|
-| `name` | Workflow label (cosmetic — shown in the Actions tab) |
-| `on` | **Required.** The trigger. Runs on push to `main` or `master` |
-| `jobs` | **Required.** The work. Two jobs: `run-test` and `deploy` |
-| `runs-on: ubuntu-latest` | The cloud machine. Must be a GitHub runner label (`ubuntu-latest`, `windows-latest`, `macos-latest`). **Not** a Docker image like `alpine:latest` |
-| `steps` | **Required per job.** Ordered commands/actions |
-| `uses: actions/checkout@v4` | Reuse GitHub's official action to clone your repo |
-| `uses: actions/setup-node@v4` | Reuse GitHub's action to install Node.js |
-| `with: node-version: 20` | Arguments passed into that action |
-| `run: npm test` | Run a shell command. If it fails (non-zero exit), the build goes **red** |
-| `needs: run-test` | `deploy` waits for `run-test` to pass. If tests fail, `deploy` is **skipped** — this arrow is the CI → CD bridge |
+| Part                          | Meaning                                                                                                                                           |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                        | Workflow label (cosmetic — shown in the Actions tab)                                                                                              |
+| `on`                          | **Required.** The trigger. Runs on push to `main` or `master`                                                                                     |
+| `jobs`                        | **Required.** The work. Two jobs: `run-test` and `deploy`                                                                                         |
+| `runs-on: ubuntu-latest`      | The cloud machine. Must be a GitHub runner label (`ubuntu-latest`, `windows-latest`, `macos-latest`). **Not** a Docker image like `alpine:latest` |
+| `steps`                       | **Required per job.** Ordered commands/actions                                                                                                    |
+| `uses: actions/checkout@v4`   | Reuse GitHub's official action to clone your repo                                                                                                 |
+| `uses: actions/setup-node@v4` | Reuse GitHub's action to install Node.js                                                                                                          |
+| `with: node-version: 20`      | Arguments passed into that action                                                                                                                 |
+| `run: npm test`               | Run a shell command. If it fails (non-zero exit), the build goes **red**                                                                          |
+| `needs: run-test`             | `deploy` waits for `run-test` to pass. If tests fail, `deploy` is **skipped** — this arrow is the CI → CD bridge                                  |
 
 ### YAML rules to remember
 
@@ -196,7 +197,7 @@ jobs:
 > skipped (PRs & branch protection, secrets, artifacts, matrix, real deploy, caching, and more),
 > organized in tiers with a recommended order. **Start there tomorrow.**
 
-- **Matrix** — test against Node 18 *and* 20 at once:
+- **Matrix** — test against Node 18 _and_ 20 at once:
   ```yaml
   run-test:
     runs-on: ubuntu-latest
@@ -217,20 +218,20 @@ jobs:
 
 ## Glossary (reference for later)
 
-| Term | Meaning |
-|------|---------|
-| **CI** | Continuous Integration — auto-build & test on every change |
-| **CD** | Continuous Delivery/Deployment — auto-ship after tests pass |
-| **Workflow** | A `.yml` file describing the pipeline |
-| **Job** | A unit of work on one machine; runs in parallel by default |
-| **Step** | One action or command inside a job |
-| **`uses`** | Run a prebuilt action (e.g. `actions/checkout`) |
-| **`run`** | Run a shell command |
-| **`needs`** | Make a job wait for another job to succeed |
-| **`runs-on`** | Which machine/OS the job runs on |
-| **`matrix`** | Run one job across multiple variations |
-| **Action** | Reusable packaged code, published as a GitHub repo |
-| **Artifact** | A file passed between jobs (since jobs don't share state) |
+| Term          | Meaning                                                     |
+| ------------- | ----------------------------------------------------------- |
+| **CI**        | Continuous Integration — auto-build & test on every change  |
+| **CD**        | Continuous Delivery/Deployment — auto-ship after tests pass |
+| **Workflow**  | A `.yml` file describing the pipeline                       |
+| **Job**       | A unit of work on one machine; runs in parallel by default  |
+| **Step**      | One action or command inside a job                          |
+| **`uses`**    | Run a prebuilt action (e.g. `actions/checkout`)             |
+| **`run`**     | Run a shell command                                         |
+| **`needs`**   | Make a job wait for another job to succeed                  |
+| **`runs-on`** | Which machine/OS the job runs on                            |
+| **`matrix`**  | Run one job across multiple variations                      |
+| **Action**    | Reusable packaged code, published as a GitHub repo          |
+| **Artifact**  | A file passed between jobs (since jobs don't share state)   |
 
 ---
 
